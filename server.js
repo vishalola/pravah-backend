@@ -1,7 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import { connectDB } from "./config/db.config.js";
-import authRoutes from "./routes/auth.route.js"
+import authRoutes from "./routes/project.routes.js"
 const app = express();
 app.use(bodyParser.json());
 app.get("/", (req,res)=>{
