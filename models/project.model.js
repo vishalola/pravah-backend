@@ -14,6 +14,12 @@ const ProjectSchema = new Schema({
         type : [
             String
         ]
+    },
+    
+    edgeList : {
+        type : [ 
+            [ Number ]
+        ]
     }
 });
 
