@@ -1,7 +1,10 @@
 import express from "express";
 import bodyParser from "body-parser";
 import { connectDB } from "./config/db.config.js";
-import authRoutes from "./routes/project.routes.js"
+// import authRoutes from "./routes/project.routes.js"
+import authRoutes from "./routes/auth.routes.js"
+import { verifyUser  } from "./middlewares/auth.middleware.js";
+
 const app = express();
 app.use(bodyParser.json());
 app.get("/", (req,res)=>{

@@ -20,7 +20,7 @@ export async function signUp(req, res){
     
         if(checkUser) return res.status(400).json({message:"User already exists"});
     
-        const encryptedPassword = hashPassword(password);
+        const encryptedPassword = await hashPassword(password);
     
         let user = await User.create({
             name,
@@ -38,6 +38,7 @@ export async function signUp(req, res){
         });    
     }
     catch(err){
+        console.log(err)
         res.status(500).json({
             message:"Internal server error"
         })
