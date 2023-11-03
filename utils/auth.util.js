@@ -1,10 +1,11 @@
 import dotenv from "dotenv";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken"
 
 dotenv.config();
 
 export function getJWT(object , expiresIn = "30d"){
-    const secret = process.env.SECRET;
+    const secret = process.env.JWT_SECRET;
     const options = {
         algorithm : "HS256",
         expiresIn: expiresIn

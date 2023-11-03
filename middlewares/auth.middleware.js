@@ -9,7 +9,7 @@ export async function verifyUser(req, res, next) {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const user = await User.findOne({ email: decoded.payload.email });
     if (!user) return response_401(res, 'Unauthorized');
-   
+    req.user = user;
     next();
   } catch (err) {
     return response_500(res, err);
