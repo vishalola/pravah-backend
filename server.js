@@ -1,15 +1,16 @@
-const express = require('express')
-const app = express()
-const connectDb = require('./config/db.config')
+import express from "express";
+import bodyParser from "body-parser";
+import { connectDB } from "./config/db.config.js";
+import authRoutes from "./routes/project.routes.js"
+const app = express();
+app.use(bodyParser.json());
+app.get("/", (req,res)=>{
+    res.send("hello world");
+})
 
-connectDb()
-
-const port = 5000
-
-app.use(express.json())
-app.use('/project', require('./routes/project.routes.js'))
-
-
-app.listen(port, () => {
-    console.log(`Server running on port ${port}`)
+app.use("/auth", authRoutes)
+connectDB().then(()=>{
+    app.listen(5000, ()=>{
+        console.log("server listening on port 5000")
+    })
 })

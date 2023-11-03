@@ -1,13 +1,9 @@
-const mongoose = require('mongoose')
+import dotenv from "dotenv";
+import mongoose from "mongoose";
+dotenv.config();
+export async function connectDB(){
+    await mongoose.connect(process.env.MONGO_DB_URL);
+    console.log("database connected succesfully.");
+}
 
-const connectDb = async () => {
-    try{
-        const connect = await mongoose.connect('mongodb+srv://iec2021066:fPQoLJ8B9YHDH0DI@mycluster.5vyhkoy.mongodb.net/kraken-backend?retryWrites=true&w=majority')
-        console.log("Database Connected: ", connect.connection.host, connect.connection.name)
-    } catch(err) {
-        console.log(err);
-        process.exit(1);
-    }
-};
 
-module.exports = connectDb;
