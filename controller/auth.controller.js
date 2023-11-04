@@ -73,3 +73,9 @@ export async function logIn(req, res){
         return res.status(200).json({token});
 
 }
+
+export async function viewDetails(req, res){
+    let id = req.params.id;
+    const user = await User.findOne({email: id})
+    return res.status(200).json(user)
+}
