@@ -19,3 +19,7 @@ export async function hashPassword(password){
     const hashedPassword = await bcrypt.hash(password, salt);
     return hashedPassword;
 }
+export async function comparePasswords(plaintextPassword, hashedPassword) {
+        const isMatch = await bcrypt.compare(plaintextPassword, hashedPassword);
+        return isMatch;
+}

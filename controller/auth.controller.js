@@ -1,4 +1,4 @@
-import { hashPassword, getJWT } from "../utils/auth.util.js";
+import { hashPassword, getJWT,comparePasswords } from "../utils/auth.util.js";
 import User from "../models/user.model.js";
 
 export async function signUp(req, res){
@@ -18,7 +18,7 @@ export async function signUp(req, res){
     
         const checkUser = await User.findOne({email});
     
-        if(checkUser) return res.status(400).json({message:"User already exists"});
+        if(checkUser) return res.status(400).json({message:"Username already exists"});
     
         const encryptedPassword = await hashPassword(password);
     
@@ -46,23 +46,22 @@ export async function signUp(req, res){
 }
 
 export async function logIn(req, res){
-    try {
+
         const {email, password} = req.body;
 
         if(!email || !password) return res.status(400).json({
             message:"Invalid Credentials"
         });
 
-        const encryptedPassword = hashPassword(password);
-
-        const user = User.findOne({email});
-
+        // console.log(encryptedPassword)
+        const user =await User.findOne({email});
         if(!user) return res.status(400).json({
             message:"User does not exist"
         });
 
-        if(user.password != encryptedPassword){
-            return res.status(400).json({
+        let passMatch = await comparePasswords(password,user.password);
+        if(!passMatch){
+            return res.status(401).json({
                 message:"Invalid Passowrd"
             });
         }
@@ -71,8 +70,6 @@ export async function logIn(req, res){
             email
         });
 
-        return res.status(201).json({token});
-    } catch (error) {
-        return res.status(500).json({message:"Internal Server Error"});       
-    }
+        return res.status(200).json({token});
+
 }

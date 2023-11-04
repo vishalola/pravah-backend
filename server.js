@@ -1,4 +1,5 @@
 import express from "express";
+import cors from 'cors';
 import bodyParser from "body-parser";
 import { connectDB } from "./config/db.config.js";
 import authRoutes from "./routes/auth.routes.js"
@@ -8,6 +9,7 @@ import taskRoutes from "./routes/task.routes.js"
 
 const app = express();
 app.use(bodyParser.json());
+app.use(cors());
 app.get("/", (req,res)=>{
     res.send("hello world");
 })
@@ -17,7 +19,7 @@ app.use("/project", verifyUser, projectRoutes)
 app.use("/task", verifyUser, taskRoutes)
 
 connectDB().then(()=>{
-    app.listen(5000, ()=>{
-        console.log("server listening on port 5000")
+    app.listen(5001, ()=>{
+        console.log("server listening on port 5001")
     })
 })
