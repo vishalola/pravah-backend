@@ -36,12 +36,15 @@ export async function saveProjects(req, res){
             let project = await Project.create({
                 name,
                 projectID,
+                owner: req.user.email,
                 usersPerm : []
             });
 
             const pro2 = await Project.findOneAndUpdate (
                 { "projectID": projectID },
-                { "usersPerm": [req.user.email] },
+                { 
+                    "usersPerm": [req.user.email]
+                },
                 { returnOriginal: false }
             )
             
@@ -125,14 +128,37 @@ export async function openProject(req, res){
         const nodes = await Node.find(query);
         console.log(nodes);
 
-        const { name, edgeList, usersPerm } = project;
+        const { name, edgeList, usersPerm, owner } = project;
 
         return res.status(200).json({
             "name": name,
             "edgeList": edgeList,
             "nodes": nodes,
-            "usersPerm": usersPerm
+            "usersPerm": usersPerm,
+            "owner": owner
         });  
+    }
+    catch(err){
+        console.log(err)
+        res.status(500).json({
+            message:"Internal server error"
+        })
+    }
+}
+
+export async function viewDetails(req, res){
+    try{
+        let projectID = req.params.id;
+        const proj = await Project.findOne({ projectID: projectID });
+        if(!proj) {
+            return res.status(400).json({
+                "message": "project id does not exist"
+            }); 
+        }
+        return res.status(200).json({
+            name: proj.name,
+            owner: proj.owner
+        })
     }
     catch(err){
         console.log(err)

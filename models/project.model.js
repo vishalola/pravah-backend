@@ -6,6 +6,10 @@ const ProjectSchema = new Schema({
         required : true,
         trim : true,
     },
+    owner:{
+        type : String,
+        required : true,
+    },
     projectID : {
         type : String, 
         required : true,
@@ -15,7 +19,7 @@ const ProjectSchema = new Schema({
             String
         ]
     },
-    
+
     edgeList : {
         type : [ 
             [ Number ]

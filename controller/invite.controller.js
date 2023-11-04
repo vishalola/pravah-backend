@@ -37,7 +37,7 @@ export async function acceptInvites(req, res){
             }); 
         }
         
-        Invite.deleteOne({
+        await Invite.deleteOne({
             projectID: projectID,
             userID: req.user.email
         })
