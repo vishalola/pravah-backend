@@ -3,6 +3,7 @@ import User from "../models/user.model.js";
 import Node from "../models/node.model.js";
 import { makeID } from "../utils/id.util.js";
 import { addNode } from "../utils/node.util.js";
+import { checkPerm } from "../utils/project.util.js";
 
 export async function viewProjects(req, res){
     try{
@@ -107,10 +108,12 @@ export async function openProject(req, res){
             }); 
         }
 
-        console.log(project);
-        console.log(req.user.email);
+        // console.log(project);
+        // console.log(req.user.email);
 
-        let f = project.usersPerm.includes(req.user.email, 0);
+        // let f = project.usersPerm.includes(req.user.email, 0);
+
+        let f = checkPerm(req.user.email, projectID);
 
         if(!f) {
             return res.status(403).json({
