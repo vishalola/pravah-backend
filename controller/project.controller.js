@@ -76,7 +76,7 @@ export async function saveProjects(req, res){
             const pro2 = await Project.findOneAndUpdate (
                 { "projectID": projectID },
                 { 
-                    "usersPerm": [req.user.email]
+                    "usersPerm": [ [ req.user.email, "Author" ] ]
                 },
                 { returnOriginal: false }
             )

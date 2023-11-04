@@ -8,6 +8,10 @@ const InviteSchema = new Schema({
     userID: {
         type: String,
         required: true
+    },
+    role: {
+        type: String,
+        required: true
     }
 });
 

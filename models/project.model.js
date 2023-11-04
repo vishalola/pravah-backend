@@ -16,7 +16,7 @@ const ProjectSchema = new Schema({
     },
     usersPerm : {
         type : [
-            String
+            [ String ]
         ]
     },
 

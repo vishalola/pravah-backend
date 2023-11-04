@@ -36,6 +36,13 @@ export async function acceptInvites(req, res){
                 "message": "no such invites"
             }); 
         }
+
+        let { role } = invite;
+        if(!role) {
+            return res.status(400).json({
+                "message": "no role found"
+            });
+        }
         
         await Invite.deleteOne({
             projectID: projectID,
@@ -44,7 +51,7 @@ export async function acceptInvites(req, res){
 
         if(action) {
             let lst = project.usersPerm
-            lst.push(req.user.email)
+            lst.push([ req.user.email, role ])
             
             const pro2 = await Project.findOneAndUpdate (
                 { "projectID": projectID },
@@ -80,7 +87,7 @@ export async function acceptInvites(req, res){
 
 export async function sendInvites(req, res){
     try{
-        let { toInvite } = req.body;
+        let { toInvite, role } = req.body;
 
         if(!toInvite) {
             return res.status(403).json({
@@ -105,7 +112,8 @@ export async function sendInvites(req, res){
 
         let invite = await Invite.create({
             userID: toInvite,
-            projectID: projectID
+            projectID: projectID,
+            role: role
         });
 
         return res.status(201).json({
