@@ -155,9 +155,10 @@ export async function viewDetails(req, res){
                 "message": "project id does not exist"
             }); 
         }
+        const user = await User.findOne({email: proj.owner})
         return res.status(200).json({
             name: proj.name,
-            owner: proj.owner
+            owner: user.name
         })
     }
     catch(err){
