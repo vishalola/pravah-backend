@@ -7,6 +7,39 @@ import { checkPerm } from "../utils/project.util.js";
 
 export async function viewProjects(req, res){
     try{
+        let projectID = req.params.id;
+        let { nodeID, description, title, position } = req.body;
+        if(!nodeID || !position) {
+            return res.status(401).json ({
+                message: "Bad request"
+            })
+        }
+        const NODE = await Node.findOneAndUpdate (
+            { 
+                "project": projectID,
+                "nodeID": nodeID,
+            },
+            { 
+                "description": description,
+                "title": title,
+                "position": position
+            },
+            { returnOriginal: false }
+        )
+        res.status(200).json({
+            "updated": NODE
+        })
+    }
+    catch(err){
+        console.log(err)
+        res.status(500).json({
+            message:"Internal server error"
+        })
+    }
+}
+
+export async function editNode(req, res){
+    try{
         let lst = req.user.projectPerms;
 
         return res.status(201).json({

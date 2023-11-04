@@ -1,4 +1,4 @@
-import { viewProjects, openProject, saveProjects, viewDetails } from "../controller/project.controller.js";
+import { viewProjects, openProject, saveProjects, viewDetails, editNode } from "../controller/project.controller.js";
 
 import { Router } from "express";
 
@@ -8,6 +8,7 @@ router.get("/view", viewProjects);
 router.get("/open/:id", openProject);
 router.post("/save", saveProjects);
 router.get("/view/:id", viewDetails);
+router.get("/edit/:id", editNode);
 
 export default router;
 
