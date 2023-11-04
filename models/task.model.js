@@ -10,6 +10,10 @@ const TaskSchema = new Schema({
         type : Boolean,
         required : true,
     },
+    isCompleted:{
+        type:Boolean,
+        required : true,
+    },
     assignedTo : {
         type : String,
         required : true

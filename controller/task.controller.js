@@ -5,7 +5,7 @@ import { checkPerm } from "../utils/project.util.js";
 export async function updateTask(req, res){
    
     try{
-        let { title, projectID, nodeID, isAssigned, assignedTo } = req.body;
+        let { title, projectID, nodeID, isAssigned,isCompleted, assignedTo } = req.body;
         if(!title || !projectID || !nodeID || !assignedTo) {
             res.status(400).json({
                 message: "Bad request"
@@ -36,7 +36,8 @@ export async function updateTask(req, res){
             projectID,
             nodeID,
             isAssigned,
-            assignedTo
+            assignedTo,
+            isCompleted
         });
         return res.status(201).json(newTask);
     }

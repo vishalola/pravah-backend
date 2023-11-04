@@ -4,7 +4,7 @@ import { Router } from "express";
 
 const router = Router();
 
-router.post("/view", viewProjects);
+router.get("/view", viewProjects);
 router.get("/open/:id", openProject);
 router.post("/save", saveProjects);
 router.get("/view/:id", viewDetails);
