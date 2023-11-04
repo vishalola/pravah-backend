@@ -2,7 +2,7 @@ import Project from "../models/project.model.js";
 import User from "../models/user.model.js";
 import Node from "../models/node.model.js";
 import { makeID } from "../utils/id.util.js";
-import { updateNode } from "../utils/node.util.js";
+import { addNode } from "../utils/node.util.js";
 
 export async function viewProjects(req, res){
     try{
@@ -77,10 +77,12 @@ export async function saveProjects(req, res){
             returnOriginal: false
         });
 
-        console.log(nodes);
+        // console.log(nodes);
+
+        await Node.deleteMany({ projectID: projectID });
 
         for (let index = 0; index < nodes.length; index++) {
-            console.log(await updateNode(projectID, nodes[index]));
+            console.log(await addNode(projectID, nodes[index]));
         }
 
         return res.status(201).json({
@@ -120,12 +122,13 @@ export async function openProject(req, res){
         const nodes = await Node.find(query);
         console.log(nodes);
 
-        const { name, edgeList } = project;
+        const { name, edgeList, usersPerm } = project;
 
         return res.status(200).json({
             "name": name,
             "edgeList": edgeList,
-            "nodes": nodes
+            "nodes": nodes,
+            "usersPerm": usersPerm
         });  
     }
     catch(err){
