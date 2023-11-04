@@ -6,6 +6,7 @@ import authRoutes from "./routes/auth.routes.js"
 import projectRoutes from "./routes/project.routes.js"
 import { verifyUser  } from "./middlewares/auth.middleware.js";
 import taskRoutes from "./routes/task.routes.js"
+import inviteRoutes  from "./routes/invite.routes.js"
 
 const app = express();
 app.use(bodyParser.json());
@@ -17,6 +18,7 @@ app.get("/", (req,res)=>{
 app.use("/auth", authRoutes)
 app.use("/project", verifyUser, projectRoutes)
 app.use("/task", verifyUser, taskRoutes)
+app.use("/invite", verifyUser, inviteRoutes)
 
 connectDB().then(()=>{
     app.listen(5001, ()=>{
