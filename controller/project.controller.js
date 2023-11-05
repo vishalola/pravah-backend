@@ -5,7 +5,7 @@ import { makeID } from "../utils/id.util.js";
 import { addNode } from "../utils/node.util.js";
 import { checkPerm } from "../utils/project.util.js";
 
-export async function viewProjects(req, res){
+export async function editNode(req, res){
     try{
         let projectID = req.params.id;
         let { nodeID, description, title, position } = req.body;
@@ -38,7 +38,7 @@ export async function viewProjects(req, res){
     }
 }
 
-export async function editNode(req, res){
+export async function viewProjects(req, res){
     try{
         let lst = req.user.projectPerms;
 
@@ -159,7 +159,6 @@ export async function openProject(req, res){
 
         const query = { projectID: projectID };
         const nodes = await Node.find(query);
-        console.log(nodes);
 
         const { name, edgeList, usersPerm, owner } = project;
 

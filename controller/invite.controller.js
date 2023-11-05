@@ -6,8 +6,23 @@ import { checkPerm } from "../utils/project.util.js";
 export async function viewInvites(req, res){
     try{
         let invites = await Invite.find({ userID: req.user.email });
+        let invitesWithProjectInfo = [];
+
+        for (const invite of invites) {
+          const project = await Project.findOne({projectID: invite.projectID });
+            // console.log(project)
+          // Check if the project exists
+          if (project) {
+            invitesWithProjectInfo.push({
+              projectName: project.name,
+              projectID: invite.projectID,
+              author: invite.author,
+              role:invite.role
+            });
+          }
+        }
         return res.status(200).json({
-            invites: invites
+            invites: invitesWithProjectInfo
         })
     }
     catch(err){
@@ -109,11 +124,12 @@ export async function sendInvites(req, res){
                 "message": "access denied"
             })
         }
-
+        const user = await User.findOne({email:req.user.email})
         let invite = await Invite.create({
             userID: toInvite,
             projectID: projectID,
-            role: role
+            role: role,
+            author: user.name
         });
 
         return res.status(201).json({

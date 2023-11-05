@@ -3,7 +3,6 @@ import User from '../models/user.model.js';
 
 // Passing jwt through
 export async function verifyUser(req, res, next) {
-  console.log("here");
   const token = req.header('Authorization');
   if(!token){
     return res.status(401).json({message : "Unauthorized"})
