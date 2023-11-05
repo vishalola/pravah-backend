@@ -41,13 +41,13 @@ export async function updateTask(req, res){
             isCompleted
         });
 
-        const filter = { "projectID": projectID, "nodeID": nodeID };
+        const filter = { "projectID": projectID, "id": nodeID };
         const take = await Nodes.findOne(filter);
-
+        console.log(projectID)
+        console.log(nodeID)
         let lst = take.taskList;
         let toPush = [ title, assignedTo, isCompleted ] 
         lst.push(toPush)
-
         const update = { taskList: lst };
 
         const Node = await Nodes.findOneAndUpdate(filter, update, {
