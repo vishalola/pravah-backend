@@ -1,4 +1,5 @@
 import Task from "../models/task.model.js";
+import Nodes from "../models/node.model.js";
 import Project from "../models/project.model.js";
 import { checkPerm } from "../utils/project.util.js";
 
@@ -39,6 +40,20 @@ export async function updateTask(req, res){
             assignedTo,
             isCompleted
         });
+
+        const filter = { "projectID": projectID, "nodeID": nodeID };
+        const take = await Nodes.findOne(filter);
+
+        let lst = take.taskList;
+        let toPush = [ title, assignedTo, isCompleted ] 
+        lst.push(toPush)
+
+        const update = { taskList: lst };
+
+        const Node = await Nodes.findOneAndUpdate(filter, update, {
+            returnOriginal: false
+        });
+
         return res.status(201).json(newTask);
     }
     catch(err){
