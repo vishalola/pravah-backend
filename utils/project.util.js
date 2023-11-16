@@ -5,11 +5,14 @@ export const checkPerm = async (userID, projectID) => {
     let data = project.usersPerm;
     for(let i=0;i<data.length;i++)
     {
-        if(data[i]===userID)
+        console.log("Checking Permission")
+        if(data[i][0]===userID)
         {
+            console.log("I was here")
             return true;
         }
     }
+    console.log("Not found");
     return false;
 }
 

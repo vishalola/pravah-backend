@@ -5,6 +5,7 @@ import { makeID } from "../utils/id.util.js";
 import { addNode } from "../utils/node.util.js";
 import { checkPerm } from "../utils/project.util.js";
 
+
 export async function editNode(req, res){
     try{
         let projectID = req.params.id;
@@ -144,13 +145,7 @@ export async function openProject(req, res){
             }); 
         }
 
-        // console.log(project);
-        // console.log(req.user.email);
-
-        // let f = project.usersPerm.includes(req.user.email, 0);
-
-        let f = checkPerm(req.user.email, projectID);
-
+        let f = await checkPerm(req.user.email, projectID);
         if(!f) {
             return res.status(403).json({
                 "message": "access denied"
@@ -159,14 +154,14 @@ export async function openProject(req, res){
 
         const query = { projectID: projectID };
         const nodes = await Node.find(query);
-
         const { name, edgeList, usersPerm, owner } = project;
 
+        let teamData =await getUserDetails(usersPerm);
         return res.status(200).json({
             "name": name,
             "edgeList": edgeList,
             "nodes": nodes,
-            "usersPerm": usersPerm,
+            "usersPerm": teamData,
             "owner": owner
         });  
     }
@@ -198,6 +193,22 @@ export async function viewDetails(req, res){
         res.status(500).json({
             message:"Internal server error"
         })
+    }
+}
+async function getUserDetails(usersPerm){
+    try{
+        let temp = [];
+       for(let i=0;i<usersPerm.length;i++)
+       {
+        let userData = await User.findOne({"email":usersPerm[i][0]})
+        temp.push([userData.name,usersPerm[i][0],usersPerm[i][1]]);
+       }
+        return temp;
+    }
+
+    catch(e)
+    {
+        return e;
     }
 }
 

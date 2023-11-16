@@ -25,6 +25,10 @@ const TaskSchema = new Schema({
     nodeID : {
         type : Number,
         required : true
+    },
+    taskID:{
+        type:Number,
+        required: true
     }
 });
 

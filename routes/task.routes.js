@@ -1,11 +1,13 @@
-import { updateTask, fetchTaskByUser, fetchTaskByID } from "../controller/task.controller.js";
+import { createTask,assignTask,fetchTaskByUser, fetchTaskByID, completeTask } from "../controller/task.controller.js";
 
 import { Router } from "express";
 
 const router = Router();
 
-router.post("/update", updateTask);
+router.post("/create", createTask);
+router.post("/update",completeTask);
+router.post("/assign",assignTask);
 router.get("/fetchByUser", fetchTaskByUser);
-router.get("/fetchByID", fetchTaskByID);
+router.post("/fetchByID", fetchTaskByID);
 
 export default router;

@@ -19,6 +19,10 @@ app.use("/auth", authRoutes)
 app.use("/project", verifyUser, projectRoutes)
 app.use("/task", verifyUser, taskRoutes)
 app.use("/invite", verifyUser, inviteRoutes)
+app.get("/fetchDetails",verifyUser,(req,res)=>{
+    console.log("hey");
+    return res.status(200).json(req.user)
+})
 
 connectDB().then(()=>{
     app.listen(5001, ()=>{
