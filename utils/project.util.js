@@ -8,7 +8,6 @@ export const checkPerm = async (userID, projectID) => {
         console.log("Checking Permission")
         if(data[i][0]===userID)
         {
-            console.log("I was here")
             return true;
         }
     }

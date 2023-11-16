@@ -9,31 +9,32 @@ import { checkPerm } from "../utils/project.util.js";
 export async function editNode(req, res){
     try{
         let projectID = req.params.id;
-        let { nodeID, description, title, position } = req.body;
-        if(!nodeID || !position) {
+        let { nodeID, description, title, color} = req.body;
+        if(!nodeID) {
             return res.status(401).json ({
                 message: "Bad request"
             })
         }
+        // check project perms here also
         const NODE = await Node.findOneAndUpdate (
             { 
-                "project": projectID,
-                "nodeID": nodeID,
+                "projectID": projectID,
+                "id": nodeID 
             },
             { 
                 "description": description,
                 "title": title,
-                "position": position
+                "color":color
             },
             { returnOriginal: false }
         )
-        res.status(200).json({
+        return res.status(200).json({
             "updated": NODE
         })
     }
     catch(err){
         console.log(err)
-        res.status(500).json({
+        return res.status(500).json({
             message:"Internal server error"
         })
     }
@@ -116,7 +117,7 @@ export async function saveProjects(req, res){
         });
 
         // console.log(nodes);
-
+        // deleting right now is necessary to tackle deleted nodes.
         await Node.deleteMany({ projectID: projectID });
 
         for (let index = 0; index < nodes.length; index++) {

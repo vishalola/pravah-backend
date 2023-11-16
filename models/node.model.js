@@ -18,6 +18,9 @@ const NodeSchema = new Schema({
     },
     description: {
         type: String
+    },
+    color:{
+        type: String
     }
 });
 
