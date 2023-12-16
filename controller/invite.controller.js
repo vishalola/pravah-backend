@@ -124,6 +124,20 @@ export async function sendInvites(req, res){
                 "message": "access denied"
             })
         }
+        // here first check if the invited person exists or not
+        const userCheck = await User.findOne({email:toInvite})
+        if(!userCheck)
+        {
+            return res.status(404).json({
+                "message":"user not found"
+            })
+        }
+        if(toInvite===req.user.email)
+        {
+            return res.status(401).json({
+                "message":"Self invitation detected"
+            })
+        }
         const user = await User.findOne({email:req.user.email})
         let invite = await Invite.create({
             userID: toInvite,

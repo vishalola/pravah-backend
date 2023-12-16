@@ -44,8 +44,27 @@ export async function viewProjects(req, res){
     try{
         let lst = req.user.projectPerms;
 
+        let details=[];
+        for(let i=0;i<lst.length;i++)
+        {
+            let projectID = lst[i];
+            const proj = await Project.findOne({ projectID: projectID });
+            if(!proj) {
+                continue;
+            }
+            const user = await User.findOne({email: proj.owner})
+            if(!user)
+            {
+                continue;
+            }
+            details.push({
+                name: proj.name,
+                owner: user.name,
+                ID:projectID
+            })
+        }
         return res.status(201).json({
-            "projects": lst
+            "projects": details
         });    
     }
     catch(err){

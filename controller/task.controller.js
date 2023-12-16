@@ -184,19 +184,34 @@ export async function fetchTaskByID(req, res){
         const dataToBeSent = [];
         for(const tsk of tasks)
         {   
-            const user = await User.findOne({email:tsk.assignedTo})
-
-            if(user)
+            if(tsk.assignedTo==="Unassigned")
             {
                 let tempObject = {
-                    title: tsk.title,
+                    title:tsk.title,
                     taskID:tsk.taskID,
-                    assignedTo:user.name,
+                    assignedTo:tsk.assignedTo,
                     isAssigned:tsk.isAssigned,
                     isCompleted:tsk.isCompleted
                 };
                 dataToBeSent.push(tempObject);
             }
+            else
+            {
+                const user = await User.findOne({email:tsk.assignedTo})
+
+                if(user)
+                {
+                    let tempObject = {
+                        title: tsk.title,
+                        taskID:tsk.taskID,
+                        assignedTo:user.name,
+                        isAssigned:tsk.isAssigned,
+                        isCompleted:tsk.isCompleted
+                    };
+                    dataToBeSent.push(tempObject);
+                }
+            }
+
         }
         return res.status(200).json({ "tasks": dataToBeSent });
         // return res.status(200).json({ "tasks": tasks });
