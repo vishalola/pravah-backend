@@ -55,6 +55,7 @@ export async function logIn(req, res){
 
         // console.log(encryptedPassword)
         const user =await User.findOne({email});
+        
         if(!user) return res.status(400).json({
             message:"User does not exist"
         });
